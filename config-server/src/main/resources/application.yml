@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/PacoCuentaPersonal/tis-config-server.git
+          search-paths: '{application}'
+          default-label: main
+server:
+  port: 8888
