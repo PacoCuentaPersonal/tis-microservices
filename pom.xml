@@ -23,6 +23,7 @@
 		<module>config-server</module>
 		<module>discovery-server</module>
 		<module>services-gateway</module>
+		<module>authentication-service</module>
 	</modules>
 
 	<url/>

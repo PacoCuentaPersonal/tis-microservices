@@ -8,5 +8,7 @@ spring:
           uri: https://github.com/PacoCuentaPersonal/tis-config-server.git
           search-paths: '{application}'
           default-label: main
+          username: PacoCuentaPersonal
+          password: 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
 server:
   port: 8888

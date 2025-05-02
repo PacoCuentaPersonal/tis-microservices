@@ -11,11 +11,25 @@ services:
       - mssql-data:/var/opt/mssql
     networks:
       - app-network
-
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6700:6379
+    volumes:
+      - redis-data:/data
+    environment:
+      - REDIS_PASSWORD=my-password
+      - REDIS_PORT=6700
+      - REDIS_DATABASES=0
+    networks:
+      - app-network
 networks:
   app-network:
     driver: bridge
 
 volumes:
   mssql-data:
+    driver: local
+  redis-data:
     driver: local
