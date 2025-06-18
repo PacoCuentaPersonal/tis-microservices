@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="client-table" class="table-container">
+  <table class="styled-table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Client Type</th>
+      <th>Client ID</th>
+      <th>Scopes</th>
+      <th>Redirect URL</th>
+      <th>Post Logout URL</th>
+      <th>Access Token (Hours)</th>
+      <th>Refresh Token (Days)</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="clientBinding : ${clients}">
+      <td th:text="${clientBinding.id}"></td>
+      <td>
+        <span th:if="${clientBinding.clientType != null}"
+              th:text="${clientBinding.clientType}"
+              th:class="${clientBinding.clientType == 'PUBLIC' ? 'badge badge-info' : 'badge badge-success'}">
+        </span>
+      </td>
+      <td th:text="${clientBinding.clientId}"></td>
+      <td th:text="${clientBinding.scope}"></td>
+      <td th:text="${clientBinding.redirectUri}"></td>
+      <td th:text="${clientBinding.postLogoutRedirectUri}"></td>
+      <td th:text="${clientBinding.accessTokenHours}"></td>
+      <td th:text="${clientBinding.refreshTokenDays}"></td>
+      <td>
+        <div class="btn-group">
+          <button type="button"
+                  th:attr="data-primaryidclient=${clientBinding.id},
+                                data-clientid=${clientBinding.clientId},
+                                data-clienttype=${clientBinding.clientType},
+                                data-scopes=${clientBinding.scope},
+                                data-redirecturi=${clientBinding.redirectUri},
+                                data-postlogoutredirecturi=${clientBinding.postLogoutRedirectUri},
+                                data-accesstokenhours=${clientBinding.accessTokenHours},
+                                data-refreshtokendays=${clientBinding.refreshTokenDays}"
+                  class="btn btn-primary btn-sm edit-button-client">Edit</button>
+          <button type="button"
+                  th:attr="data-primaryidclient=${clientBinding.id}"
+                  class="btn btn-danger btn-sm delete-button-client">Delete</button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .badge {
+    padding: 0.25em 0.6em;
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+  }
+
+  .badge-info {
+    color: #fff;
+    background-color: #17a2b8;
+  }
+
+  .badge-success {
+    color: #fff;
+    background-color: #28a745;
+  }
+</style>
+</body>
+</html>

@@ -1,0 +1,27 @@
+# Carpetas propias
+/discovery-server/target
+/config-server/target
+/services-gateway/target
+
+/target/
+/.mvn/
+*.log
+dependency-reduced-pom.xml
+
+# Archivos de IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+.factorypath
+
+# Archivos temporales
+*.tmp
+*.bak
+*.swp
+*~
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db

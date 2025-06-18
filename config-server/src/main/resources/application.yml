@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations:
+            - classpath:/config/{application}/
+            - classpath:/config/global/
+        default-label: master
+
+server:
+  port: 31049
+
+logging:
+  level:
+    org.springframework.cloud.config: DEBUG
+    org.springframework.core.io: DEBUG
+    org.springframework.boot.context.config: DEBUG

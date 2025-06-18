@@ -1,0 +1,18 @@
+server:
+  port: 31449
+
+auth0:
+  client-id: oktc2dFaSsdv8oMYeOtuLzrNfRDBGz9N
+  client-secret: LJVltY4FCqzsmjFtkkZkby_H7Ni3hpCt_zIIr3VzA3LjwlkW5tjN6ZLCE8k6PR0e
+
+logging:
+  level:
+    root: INFO
+    com.jcs.userservice: DEBUG
+    org.springframework.security: INFO
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true

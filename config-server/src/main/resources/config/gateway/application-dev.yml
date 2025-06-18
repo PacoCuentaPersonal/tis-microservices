@@ -1,0 +1,41 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+#          auth0:
+#            client-id: oktc2dFaSsdv8oMYeOtuLzrNfRDBGz9N
+#            client-secret: LJVltY4FCqzsmjFtkkZkby_H7Ni3hpCt_zIIr3VzA3LjwlkW5tjN6ZLCE8k6PR0e
+#            scope:
+#              - openid
+#              - profile
+#              - offline_access
+#              - role
+#            authorization-grant-type: authorization_code
+#            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+#        provider:
+#          auth0:
+#            issuer-uri: https://escm.us.auth0.com/
+#            jwk-set-uri: https://escm.us.auth0.com/.well-known/jwks.json
+      resourceserver:
+        jwt:
+          issuer-uri: https://escm.us.auth0.com/
+          jwk-set-uri: https://escm.us.auth0.com/.well-known/jwks.json
+
+  cloud:
+    gateway:
+      routes:
+        - id: user-management-service
+          uri: http://localhost:31449
+          predicates:
+            - Path=/api/v1/users/**, /api/v1/roles/**, /api/v1/permissions/**
+auth0:
+  audience: http://esm/api
+server:
+  port: 31149
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security.oauth2: TRACE
+    org.springframework.cloud.gateway: DEBUG

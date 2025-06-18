@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: notification-service
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:ideadesarrollandose@gmail.com}
+    password: ${MAIL_PASSWORD:dqwr rxww eqkq rjbu}
+    properties:
+      mail:
+        smtp:
+          auth: ${MAIL_SMTP_AUTH:true}
+          starttls:
+            enable: ${MAIL_SMTP_STARTTLS_ENABLE:true}
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        allow.auto.create.topics: false
+        spring.json.trusted.packages: "com.tis.account"
+
+app:
+  base-url: https://tuempresa.com
+
+email:
+  template:
+    company-name: TuEmpresa
+    team-name: El Equipo de TuEmpresa
+    address: 123 Tu Calle, Tu Ciudad, País 12345
+    logo-url: https://asset.cloudinary.com/dcg6envhf/d7e6b71d9287a5a0e3b94c0f33c0c13c
+    social-links:
+      facebook: https://facebook.com/tuempresa
+      tiktok: https://tiktok.com/@tuempresa
+      whatsapp: https://wa.me/1234567890
+      linkedin: https://linkedin.com/company/tuempresa
+    footer-links:
+      privacy: https://tuempresa.com/privacy
+      support: https://tuempresa.com/support
+
+logging:
+  level:
+    org.springframework.kafka: DEBUG
+    org.apache.kafka: DEBUG
+    com.tis.notificationservice: DEBUG

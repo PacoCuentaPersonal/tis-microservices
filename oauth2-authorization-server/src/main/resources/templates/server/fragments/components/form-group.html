@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Campo de formulario reutilizable -->
+<div th:fragment="input-field(label, fieldName, placeholder, type)" class="form-group">
+  <label th:for="${fieldName}" th:text="${label}"></label>
+  <input th:type="${type ?: 'text'}"
+         th:id="${fieldName}"
+         th:name="${fieldName}"
+         th:placeholder="${placeholder}"
+         class="form-control"/>
+</div>
+
+<!-- Select reutilizable -->
+<div th:fragment="select-field(label, fieldName, options, optionValue, optionText)" class="form-group">
+  <label th:for="${fieldName}" th:text="${label}"></label>
+  <select th:id="${fieldName}" th:name="${fieldName}" class="form-control">
+    <option value="">Select...</option>
+    <option th:each="option : ${options}"
+            th:value="${option[optionValue]}"
+            th:text="${option[optionText]}"></option>
+  </select>
+</div>
+</body>
+</html>

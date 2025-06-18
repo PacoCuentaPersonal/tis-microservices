@@ -1,0 +1,86 @@
+version: '3.9'
+services:
+  # SQL Server Database
+  authentication-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: authentication-db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Passw0rd
+      - MSSQL_PID=Express
+    ports:
+      - "31200:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+    networks:
+      - app-network
+
+  # Redis Cache
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "31201:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --requirepass my-password
+    networks:
+      - app-network
+
+  # Zookeeper
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    networks:
+      - app-network
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  # Kafka
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    networks:
+      - app-network
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1  # Tu añades esto
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT  # Implícito en el ejemplo
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+
+  # Kafka Manager UI (CMAK)
+  kafka-manager:
+    image: hlebalbau/kafka-manager:stable
+    container_name: kafka-manager
+    ports:
+      - "31212:9000"
+    environment:
+      ZK_HOSTS: "zookeeper:2181"
+      APPLICATION_SECRET: "random-secret"
+    networks:
+      - app-network
+    depends_on:
+      - zookeeper
+      - kafka
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mssql-data:
+    driver: local
+  redis-data:
+    driver: local

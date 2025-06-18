@@ -1,0 +1,40 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.tis</groupId>
+    <artifactId>parent-project</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>parent-tis</name>
+    <description>Proyecto padre para microservicios</description>
+
+    <properties>
+    </properties>
+
+    <modules>
+        <module>gateway-service</module>
+        <module>core-service</module>
+        <module>discovery-server</module>
+        <module>config-server</module>
+        <module>oauth2-authorization-server</module>
+        <module>file-service</module>
+        <module>common-shared</module>
+        <module>common-events</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

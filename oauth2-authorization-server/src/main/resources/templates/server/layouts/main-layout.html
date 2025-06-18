@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Dashboard</title>
+
+    <!-- CSS principal con todas las importaciones -->
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+
+    <!-- CSS adicional por página -->
+    <th:block layout:fragment="styles"></th:block>
+</head>
+<body>
+<!-- Header -->
+<div th:replace="~{server/fragments/common/header :: header}"></div>
+
+<!-- Contenido principal -->
+<main class="container">
+    <!-- Modales comunes -->
+    <div th:replace="~{server/fragments/common/modals :: success-modal}"></div>
+    <div th:replace="~{server/fragments/common/modals :: error-modal}"></div>
+
+    <!-- Contenido específico de cada página -->
+    <div layout:fragment="content"></div>
+</main>
+
+<!-- Footer -->
+<div th:replace="~{server/fragments/common/footer :: footer}"></div>
+
+<!-- Scripts comunes -->
+<script type="module" th:src="@{/js/main.js}"></script>
+
+<!-- Scripts adicionales por página -->
+<th:block layout:fragment="scripts"></th:block>
+</body>
+</html>
