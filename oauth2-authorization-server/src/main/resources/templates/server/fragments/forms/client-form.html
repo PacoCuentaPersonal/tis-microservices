@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<form th:fragment="client-form" method="post" class="form-box" th:action="@{/save-client}" th:object="${client}">
+  <div class="form-group" th:if="${client.id != null && !client.id.isEmpty()}">
+    <label for="primaryIdClient">ID</label>
+    <input type="text" id="primaryIdClient" th:field="*{id}" class="form-control" readonly placeholder="Enter ID"/>
+  </div>
+
+  <div class="form-group">
+    <label for="clientType">Client Type</label>
+    <select id="clientType" th:field="*{clientType}" class="form-control" required>
+      <option value="">Select Client Type</option>
+      <option value="PUBLIC">Public Client (SPA, Mobile, Desktop)</option>
+      <option value="CONFIDENTIAL">Confidential Client (Backend, Server-side)</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="clientId">Client ID</label>
+    <input type="text" id="clientId" th:field="*{clientId}" class="form-control" placeholder="Enter Client ID" required/>
+  </div>
+
+  <div class="form-group" id="clientSecretGroup" style="display: none;">
+    <label for="clientSecret">Client Secret</label>
+    <input type="text" id="clientSecret" th:field="*{clientSecret}" class="form-control" placeholder="Enter Client Secret"/>
+    <small class="form-text text-muted">Required for confidential clients. Leave empty to keep current secret.</small>
+  </div>
+
+  <div class="form-group" id="clientCredentialsGroup" style="display: none;">
+    <label>
+      <input type="checkbox" id="enableClientCredentials" th:field="*{enableClientCredentials}"/>
+      Enable Client Credentials Grant
+    </label>
+    <small class="form-text text-muted">For machine-to-machine authentication</small>
+  </div>
+
+  <div class="form-group">
+    <label for="scopes">Scopes (Comma separated)</label>
+    <input type="text" id="scopes" th:field="*{scopes}" class="form-control" placeholder="Enter Scopes" required/>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="accessTokenHours">Access Token Hours</label>
+      <input type="number" id="accessTokenHours" th:field="*{accessTokenHours}" class="form-control" placeholder="Enter expires access token hours" required/>
+    </div>
+    <div class="form-group">
+      <label for="refreshTokenDays">Refresh Token Days</label>
+      <input type="number" id="refreshTokenDays" th:field="*{refreshTokenDays}" class="form-control" placeholder="Enter expires refresh token days" required/>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="redirectUri">Redirect URL</label>
+    <input type="text" id="redirectUri" th:field="*{redirectUri}" class="form-control" placeholder="Enter Redirect URL" required/>
+  </div>
+
+  <div class="form-group">
+    <label for="postLogoutRedirectUri">Post Logout Redirect URL</label>
+    <input type="text" id="postLogoutRedirectUri" th:field="*{postLogoutRedirectUri}" class="form-control" placeholder="Enter Post Logout Redirect URL"/>
+    <small class="form-text text-muted">Where to redirect after logout (optional)</small>
+  </div>
+
+  <div class="form-group" id="clientTypeInfo" style="display: none;">
+    <div class="alert alert-info" id="publicClientInfo" style="display: none;">
+      <strong>Public Client:</strong>
+      <ul>
+        <li>No client secret required</li>
+        <li>PKCE (Proof Key for Code Exchange) will be enabled automatically</li>
+        <li>Suitable for SPAs, mobile apps, and desktop applications</li>
+      </ul>
+    </div>
+    <div class="alert alert-info" id="confidentialClientInfo" style="display: none;">
+      <strong>Confidential Client:</strong>
+      <ul>
+        <li>Client secret is required</li>
+        <li>Can enable client credentials grant for M2M authentication</li>
+        <li>Suitable for backend services and server-side applications</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class=" btn-group">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-secondary btn-clear-client">Clear</button>
+  </div>
+</form>
+
+<style>
+  .alert {
+    position: relative;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+  }
+
+  .alert-info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+  }
+
+  .alert ul {
+    margin-bottom: 0;
+    padding-left: 1.5rem;
+  }
+</style>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="header">
+    <div class="wrapper">
+        <h1 class="logo">Auth Server Configuration</h1>
+        <nav>
+            <ul class="nav-links">
+                <li><a th:href="@{/dashboard}" th:classappend="${currentUri == '/dashboard'} ? 'active' : ''">Dashboard</a></li>
+                <li><a th:href="@{/account}" th:classappend="${currentUri == '/account'} ? 'active' : ''">Account</a></li>
+                <li><a th:href="@{/roles}" th:classappend="${currentUri == '/roles'} ? 'active' : ''">Roles</a></li>
+                <li><a th:href="@{/client}" th:classappend="${currentUri == '/client'} ? 'active' : ''">Client</a></li>
+                <li>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="btn btn-primary">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+</body>
+</html>

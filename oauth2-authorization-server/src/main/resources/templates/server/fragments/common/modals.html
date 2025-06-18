@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Modal de éxito -->
+<div th:fragment="success-modal" th:if="${successMessage}" id="successMessage" class="modal-overlay">
+    <div class="modal-content">
+        <p th:text="${successMessage}"></p>
+        <button type="button">Close</button>
+    </div>
+</div>
+
+<!-- Modal de error -->
+<div th:fragment="error-modal" th:if="${errorMessage}" id="errorModal" class="modal-overlay">
+    <div class="modal-content" style="border-left: 6px solid #e74c3c;">
+        <p th:text="${errorMessage}" style="color: #e74c3c;"></p>
+        <button type="button">Close</button>
+    </div>
+</div>
+</body>
+</html>

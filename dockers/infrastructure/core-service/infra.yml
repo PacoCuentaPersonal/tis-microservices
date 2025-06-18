@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  # PostgreSQL Database
+  core-service-db:
+    container_name: core-service-db
+    image: postgres:17-alpine
+    restart: always
+    ports:
+      - "5400:5432"
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev2025@
+      POSTGRES_DB: core-entities
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - core_entities_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dev -d core-entities"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - kafka-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  core_entities_data:
+    name: core_entities_data

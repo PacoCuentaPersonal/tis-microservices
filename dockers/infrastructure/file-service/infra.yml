@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: image-service-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    
+  minio:
+    image: minio/minio:latest
+    container_name: image-service-minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_BROWSER_REDIRECT_URL: http://localhost:9001
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    restart: unless-stopped
+  db-file:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: db-file
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=File@Dev#2025!Secure
+      - MSSQL_PID=Developer
+    ports:
+      - "39000:1433"
+    volumes:
+      - mssql-file-data:/var/opt/mssql
+volumes:
+  redis_data:
+  minio_data:
+  mssql-file-data:

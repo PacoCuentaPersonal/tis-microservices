@@ -1,12 +1,22 @@
 spring:
   application:
     name: config-server
+  profiles:
+    active: native
   cloud:
     config:
       server:
-        git:
-          uri: https://github.com/PacoCuentaPersonal/tis-config-server.git
-          search-paths: '{application}'
-          default-label: main
+        native:
+          search-locations:
+            - classpath:/config/{application}/
+            - classpath:/config/global/
+        default-label: master
+
 server:
-  port: 8888
+  port: 31049
+
+logging:
+  level:
+    org.springframework.cloud.config: DEBUG
+    org.springframework.core.io: DEBUG
+    org.springframework.boot.context.config: DEBUG

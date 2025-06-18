@@ -1,0 +1,4 @@
+INSERT INTO app.document_type (clientName,active,created_by)
+VALUES ('DOCUMENTO NACIONAL DE IDENTIDAD', TRUE, 'SYSTEM'),
+       ('CARNET DE EXTRANJERIA', TRUE, 'SYSTEM'),
+       ('CEDULA DE IDENTIDAD', TRUE, 'SYSTEM');

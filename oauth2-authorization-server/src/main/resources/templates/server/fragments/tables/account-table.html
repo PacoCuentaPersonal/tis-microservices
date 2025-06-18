@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="account-table">
+  <!-- Barra de búsqueda -->
+  <div class="search-container">
+    <form th:action="@{/account}" method="get" class="search-form">
+      <input type="text"
+             name="search"
+             th:value="${searchTerm}"
+             placeholder="Search by email..."
+             class="search-input"
+             maxlength="100"/>
+      <input type="hidden" name="size" th:value="${pageSize}"/>
+      <button type="submit" class="btn btn-primary">Search</button>
+      <a th:href="@{/account}" class="btn btn-secondary">Clear</a>
+    </form>
+  </div>
+
+  <!-- Información de paginación -->
+  <div class="pagination-info">
+    <p th:if="${accountPage.totalElements > 0}">
+      Showing
+      <span th:text="${accountPage.number * accountPage.size + 1}"></span> -
+      <span th:text="${accountPage.number * accountPage.size + accountPage.numberOfElements}"></span>
+      of <span th:text="${accountPage.totalElements}"></span> accounts
+    </p>
+    <p th:if="${accountPage.totalElements == 0}">No accounts found</p>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-container">
+    <table class="styled-table">
+      <thead>
+      <tr>
+        <th>
+          <a th:href="@{/account(page=0,size=${pageSize},search=${searchTerm},sortBy='username',sortDirection=${sortBy == 'username' && sortDirection == 'asc' ? 'desc' : 'asc'})}">
+            Username
+            <span th:if="${sortBy == 'username'}">
+              <span th:if="${sortDirection == 'asc'}">▲</span>
+              <span th:if="${sortDirection == 'desc'}">▼</span>
+            </span>
+          </a>
+        </th>
+        <th>
+          <a th:href="@{/account(page=0,size=${pageSize},search=${searchTerm},sortBy='email',sortDirection=${sortBy == 'email' && sortDirection == 'asc' ? 'desc' : 'asc'})}">
+            Email
+            <span th:if="${sortBy == 'email'}">
+              <span th:if="${sortDirection == 'asc'}">▲</span>
+              <span th:if="${sortDirection == 'desc'}">▼</span>
+            </span>
+          </a>
+        </th>
+        <th>
+          <a th:href="@{/account(page=0,size=${pageSize},search=${searchTerm},sortBy='roles.name',sortDirection=${sortBy == 'roles.name' && sortDirection == 'asc' ? 'desc' : 'asc'})}">
+            Role
+            <span th:if="${sortBy == 'roles.name'}">
+              <span th:if="${sortDirection == 'asc'}">▲</span>
+              <span th:if="${sortDirection == 'desc'}">▼</span>
+            </span>
+          </a>
+        </th>
+        <th>
+          <a th:href="@{/account(page=0,size=${pageSize},search=${searchTerm},sortBy='createdAt',sortDirection=${sortBy == 'createdAt' && sortDirection == 'asc' ? 'desc' : 'asc'})}">
+            Created
+            <span th:if="${sortBy == 'createdAt'}">
+              <span th:if="${sortDirection == 'asc'}">▲</span>
+              <span th:if="${sortDirection == 'desc'}">▼</span>
+            </span>
+          </a>
+        </th>
+        <th>
+          <a th:href="@{/account(page=0,size=${pageSize},search=${searchTerm},sortBy='updatedAt',sortDirection=${sortBy == 'updatedAt' && sortDirection == 'asc' ? 'desc' : 'asc'})}">
+            Updated
+            <span th:if="${sortBy == 'updatedAt'}">
+              <span th:if="${sortDirection == 'asc'}">▲</span>
+              <span th:if="${sortDirection == 'desc'}">▼</span>
+            </span>
+          </a>
+        </th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="account : ${accountPage.content}">
+        <td th:text="${account.username}"></td>
+        <td th:text="${account.email}"></td>
+        <td th:text="${account.roles}"></td>
+        <td th:text="${account.formattedCreatedAt}"></td>
+        <td th:text="${account.formattedUpdatedAt}"></td>
+        <td>
+          <div class="btn-group">
+            <button type="button"
+                    th:attr="data-idAccount=${account.id},
+                            data-roles=${account.roles},
+                            data-idRoles=${account.idRoles},
+                            data-username=${account.username},
+                            data-email=${account.email}"
+                    class="btn btn-primary btn-sm btn-edit-account">Edit</button>
+            <button type="button"
+                    th:attr="data-idAccount=${account.id}"
+                    class="btn btn-danger btn-sm btn-delete-account">Delete</button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Controles de paginación -->
+  <div class="pagination-controls" th:if="${accountPage.totalPages > 1}">
+    <!-- Primera página -->
+    <a th:href="@{/account(page=0,size=${pageSize},search=${searchTerm},sortBy=${sortBy},sortDirection=${sortDirection})}"
+       th:classappend="${accountPage.first} ? 'disabled' : ''"
+       class="pagination-btn">First</a>
+
+    <!-- Página anterior -->
+    <a th:href="@{/account(page=${accountPage.number - 1},size=${pageSize},search=${searchTerm},sortBy=${sortBy},sortDirection=${sortDirection})}"
+       th:classappend="${accountPage.first} ? 'disabled' : ''"
+       class="pagination-btn">Previous</a>
+
+    <!-- Números de página -->
+    <span class="page-numbers">
+      <span th:each="pageNum : ${#numbers.sequence(0, accountPage.totalPages - 1)}"
+            th:if="${pageNum >= accountPage.number - 2 && pageNum <= accountPage.number + 2}">
+        <a th:href="@{/account(page=${pageNum},size=${pageSize},search=${searchTerm},sortBy=${sortBy},sortDirection=${sortDirection})}"
+           th:text="${pageNum + 1}"
+           th:classappend="${pageNum == accountPage.number} ? 'active' : ''"
+           class="pagination-btn"></a>
+      </span>
+    </span>
+
+    <!-- Página siguiente -->
+    <a th:href="@{/account(page=${accountPage.number + 1},size=${pageSize},search=${searchTerm},sortBy=${sortBy},sortDirection=${sortDirection})}"
+       th:classappend="${accountPage.last} ? 'disabled' : ''"
+       class="pagination-btn">Next</a>
+
+    <!-- Última página -->
+    <a th:href="@{/account(page=${accountPage.totalPages - 1},size=${pageSize},search=${searchTerm},sortBy=${sortBy},sortDirection=${sortDirection})}"
+       th:classappend="${accountPage.last} ? 'disabled' : ''"
+       class="pagination-btn">Last</a>
+
+    <!-- Selector de tamaño de página -->
+    <div class="page-size-selector">
+      <label>Show:</label>
+      <select class="form-control page-size-select">
+        <option value="10" th:selected="${pageSize == 10}">10</option>
+        <option value="25" th:selected="${pageSize == 25}">25</option>
+        <option value="50" th:selected="${pageSize == 50}">50</option>
+      </select>
+      <span>entries</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .search-container {
+    margin-bottom: 20px;
+  }
+
+  .search-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .search-input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 300px;
+  }
+
+  .pagination-info {
+    margin-bottom: 10px;
+    color: #666;
+  }
+
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .pagination-btn {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    background: #fff;
+    color: #333;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+  }
+
+  .pagination-btn:hover:not(.disabled):not(.active) {
+    background-color: #f0f0f0;
+  }
+
+  .pagination-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+  }
+
+  .pagination-btn.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .page-size-selector {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: 20px;
+  }
+
+  .page-size-selector select {
+    width: auto;
+    padding: 5px;
+  }
+
+  .page-numbers {
+    display: flex;
+    gap: 5px;
+  }
+
+  /* Estilos para las flechas de ordenamiento */
+  th a {
+    color: inherit;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  th a:hover {
+    text-decoration: underline;
+  }
+</style>
+</body>
+</html>

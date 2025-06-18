@@ -1,0 +1,99 @@
+spring:
+  application:
+    name: file-service
+  servlet:
+    multipart:
+      max-file-size: ${APP_MAX_FILE_SIZE:10MB}
+      max-request-size: ${APP_MAX_REQUEST_SIZE:10MB}
+
+  task:
+    execution:
+      pool:
+        core-size: 4
+        max-size: 8
+        queue-capacity: 100
+        thread-name-prefix: image-async-
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 10
+          max-idle: 8
+          min-idle: 2
+          max-wait: 2000ms
+
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://${DB_HOST:localhost}:${DB_PORT:39000};databaseName=${DB_NAME:master};encrypt=true;trustServerCertificate=true
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD:File@Dev#2025!Secure}
+
+minio:
+  endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
+  access-key: ${MINIO_ACCESS_KEY:minioadmin}
+  secret-key: ${MINIO_SECRET_KEY:minioadmin}
+  bucket-name: ${MINIO_BUCKET:images}
+  secure: ${MINIO_SECURE:false}
+
+app:
+  image:
+    max-file-size: 10485760
+    max-width: 4096
+    max-height: 4096
+    default-quality: 0.90    # CAMBIADO: 90% para mejor calidad
+    thumbnail-quality: 0.85  # CAMBIADO: 85% para thumbnails
+    allowed-formats:
+      - jpeg
+      - jpg
+      - png
+      - gif
+      - bmp
+      - webp
+      - tiff
+    cache:
+      default-ttl: 3600
+      thumbnail-ttl: 7200
+
+logging:
+  level:
+    com.jcs.fileservice: ${LOG_LEVEL:DEBUG}
+    org.springframework.web: INFO
+    io.minio: INFO
+  pattern:
+    console: "%d{ISO8601} %highlight(%-5level) [%blue(%t)] %yellow(%C{1}): %msg%n%throwable"
+
+server:
+  port: ${SERVER_PORT:31249}
+  compression:
+    enabled: true
+    mime-types: image/webp,image/jpeg,image/png,application/json
+    min-response-size: 1024
+  ssl:
+    enabled: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:31099/eureka/
+  instance:
+    prefer-ip-address: true

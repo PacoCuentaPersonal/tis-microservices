@@ -1,0 +1,45 @@
+CONFIG-SERVER RANGE [31000-31049]
+├── INFRA: 
+└── APP: 
+    ├── config-server → 31049 (Último puerto del rango)
+
+DISCOVERY RANGE [31050-31099]
+└── APP: 
+    ├── discovery-server → 31099 (Broadcast del rango)
+
+
+OAUTH-SERVER RANGE [38000-38049]
+└── APP: 
+    ├── authorization-server → 38049 (Broadcast del rango)
+
+
+
+
+GATEWAY RANGE [31100-31149]
+└── APP: 
+    ├── gateway-service → 31149 (Broadcast)
+
+CORE-SERVICE RANGE [31150-31199]
+├── INFRA:
+│   ├── PostgreSQL → 31150 → 5432 (Primer puerto)
+└── APP:
+    ├── core-service → 31199 (Broadcast)
+
+AUTH-SERVICE RANGE [31200-31249] 
+├── INFRA:
+│   ├── MS SQL → 31200 → 1433
+│   ├── Redis → 31201 → 6379
+│   ├── Zookeeper → 31210 → 2181
+│   ├── Kafka → 9092 → 9092
+│   ├── Kafka Manager → 31212 → 9000
+└── APP:
+    ├── auth-service → 31249 (Broadcast)
+NOTIFICATION-SERVICE RANGE [31250-31299]
+├── INFRA:
+└── APP:
+    ├── notification-service -> 31299 (Broadcast)		
+
+
+INVENTORY-SERVICE RANGE [31300 - 31349]
+├── APP:
+    ├── inventory-service -> 31349

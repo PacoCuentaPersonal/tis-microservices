@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Email</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body class="email-body">
+<div class="email-container">
+    <div class="email-card">
+        <div class="email-logo">
+            <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="60" height="60" rx="12" fill="#242424"/>
+                <path d="M20 35C20 35 24 40 30 40C36 40 40 35 40 35" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                <rect x="18" y="22" width="6" height="6" rx="1" fill="white"/>
+                <rect x="36" y="22" width="6" height="6" rx="1" fill="white"/>
+            </svg>
+        </div>
+        <h1 class="email-title">Please verify your email <span class="emoji">🙂</span></h1>
+        <p class="email-text">To use X, click the verification button. This helps keep your account secure.</p>
+        <a th:href="${verificationLink}" class="email-button">Verify my account</a>
+        <p class="email-footer-text">You're receiving this email because you have an account in X. If you are not sure why you're receiving this, please contact us by replying to this email.</p>
+    </div>
+    <div class="email-footer">
+        <p>Email specialists use X's intuitive tool to design emails for desktop and mobile, and let our smart algorithm generate HTML for use in their ESPs.</p>
+    </div>
+</div>
+</body>
+</html>

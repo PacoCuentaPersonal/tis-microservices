@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{server/layouts/main-layout}">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="card shadow-sm rounded">
+        <div class="card-body">
+            <h3 class="card-title">Hello, <span th:text="${username}">Username</span></h3>
+            <p class="card-text">
+                Your roles:
+                <span th:each="role : ${authorities}" class="badge bg-primary me-1" th:text="${role.getAuthority()}">ROLE</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Dashboard stats o cualquier contenido adicional -->
+    <div class="dashboard-stats mt-3">
+        <!-- Aquí puedes agregar estadísticas o widgets del dashboard -->
+    </div>
+</main>
+</body>
+</html>
