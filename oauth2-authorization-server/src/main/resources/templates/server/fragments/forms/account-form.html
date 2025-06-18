@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<form th:fragment="account-form" th:action="@{/save-account}" th:object="${account}" method="post" class="form-box">
+    <!-- El campo ID será agregado dinámicamente por JavaScript cuando se edite -->
+    <div class="form-group">
+        <label for="rolesId">Role <span class="text-danger">*</span></label>
+        <select th:field="*{rolesId}" id="rolesId" class="form-control" required>
+            <option value="">Select Roles</option>
+            <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"></option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="username">Username <span class="text-danger">*</span></label>
+        <input type="text" th:field="*{username}" id="username" placeholder="Enter your username" class="form-control" required/>
+    </div>
+    <div class="form-group">
+        <label for="email">Email <span class="text-danger">*</span></label>
+        <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="Enter your email" required/>
+    </div>
+    <div class="form-group">
+        <label for="password">Password <span class="text-danger">*</span></label>
+        <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="Enter your password" required/>
+    </div>
+    <div class="btn-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary btn-clear-account">Clear</button>
+    </div>
+</form>
+</body>
+</html>

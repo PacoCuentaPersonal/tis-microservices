@@ -1,0 +1,96 @@
+spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME:oauth2-authorization-server}
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:sqlserver://${app.host.database};databaseName=master;encrypt=false;trustServerCertificate=true}
+    username: ${DATABASE_USERNAME:sa}
+    password: ${DATABASE_PASSWORD:OAuth2@Dev#2025!Secure}
+
+  jpa:
+    show-sql: ${JPA_SHOW_SQL:true}
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:validate}
+    properties:
+      hibernate:
+        default_schema: ${HIBERNATE_DEFAULT_SCHEMA:oauth2}
+
+  flyway:
+    default-schema: ${FLYWAY_DEFAULT_SCHEMA:oauth2}
+
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connect-timeout: ${FEIGN_CONNECT_TIMEOUT:5000}
+            read-timeout: ${FEIGN_READ_TIMEOUT:10000}
+            loggerLevel: ${FEIGN_LOGGER_LEVEL:full}
+      circuitbreaker:
+        enabled: ${FEIGN_CIRCUITBREAKER_ENABLED:true}
+  kafka:
+    bootstrap-servers: localhost:9092
+    admin:
+      auto-create: true #cambiar en produccion
+      fail-fast: true
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        enable.idempotence: true
+        retries: 3
+        acks: all
+        max.in.flight.requests.per.connection: 1
+        delivery.timeout.ms: 30000
+        request.timeout.ms: 15000
+
+
+server:
+  port: ${SERVER_PORT:10000}
+
+logging:
+  level:
+    org.springframework.security: ${LOG_LEVEL_SECURITY:TRACE}
+    org.springframework.security.oauth2: ${LOG_LEVEL_OAUTH2:TRACE}
+    org.springframework.security.oauth2.server.authorization: ${LOG_LEVEL_OAUTH2_SERVER:TRACE}
+    org.springframework.web: ${LOG_LEVEL_WEB:DEBUG}
+    org.springframework.web.cors: ${LOG_LEVEL_CORS:DEBUG}
+
+app:
+  host:
+    api-gateway: ${API_GATEWAY_HOST:localhost:3099}
+    eureka: ${EUREKA_HOST:http://localhost:31099}
+    database: ${DATABASE_HOST:localhost:38000}
+
+  file:
+    upload:
+      max-file-size: ${FILE_UPLOAD_MAX_SIZE:5242880}
+      min-file-size: ${FILE_UPLOAD_MIN_SIZE:1024}
+      max-filename-length: ${FILE_UPLOAD_MAX_FILENAME_LENGTH:255}
+      max-files: ${FILE_UPLOAD_MAX_FILES:10}
+      allowed-mime-types:
+        - ${FILE_UPLOAD_MIME_TYPE_1:image/jpeg}
+        - ${FILE_UPLOAD_MIME_TYPE_2:image/jpg}
+        - ${FILE_UPLOAD_MIME_TYPE_3:image/png}
+        - ${FILE_UPLOAD_MIME_TYPE_4:image/gif}
+        - ${FILE_UPLOAD_MIME_TYPE_5:image/webp}
+      allowed-extensions:
+        - ${FILE_UPLOAD_EXT_1:jpg}
+        - ${FILE_UPLOAD_EXT_2:jpeg}
+        - ${FILE_UPLOAD_EXT_3:png}
+        - ${FILE_UPLOAD_EXT_4:gif}
+        - ${FILE_UPLOAD_EXT_5:webp}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${app.host.eureka}/eureka/
+    register-with-eureka: ${EUREKA_REGISTER:true}
+    fetch-registry: ${EUREKA_FETCH_REGISTRY:true}
+
+springdoc:
+  api-docs:
+    path: ${SPRINGDOC_API_DOCS_PATH:/api-docs}
+  swagger-ui:
+    path: ${SPRINGDOC_SWAGGER_UI_PATH:/swagger-ui.html}
+    operations-sorter: ${SPRINGDOC_OPERATIONS_SORTER:method}

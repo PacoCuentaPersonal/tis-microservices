@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:31150/core-entities
+    username: dev
+    password: dev2025@
+  flyway:
+    default-schema: app
+    schemas: app
+api:
+  reniec:
+    apisnetpe:
+      token: apis-token-14756.dAM4Ig1HJyT7OEQOxpcNmlUF9ZGQoW1F
+      url: https://api.apis.net.pe/
+    perudevs:
+      token: cGVydWRldnMucHJvZHVjdGlvbi5maXRjb2RlcnMuNjgxN2NmOWQ5ZmE0MTczZjYxMzIwYTU4
+      url: https://api.perudevs.com/
+server:
+  port: 31199

@@ -1,0 +1,33 @@
+version : '3.9'
+services:
+  MsSQL-oauth:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: MsSQL-oauth
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=OAuth2@Dev#2025!Secure
+      - MSSQL_PID=Developer
+    ports:
+      - "38000:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+    networks:
+      - app-network
+#  Redis-oauth:
+#    image: redis:latest
+#    container_name: Redis-oauth
+#    restart: always
+#    ports:
+#      - "38001:6379"
+#    volumes:
+#      - redis-volume:/data
+#    command: redis-server --requirepass my-password
+#    networks:
+#      - app-network
+
+networks:
+  app-network:
+      driver: bridge
+volumes:
+  mssql-data:
+  redis-volume:

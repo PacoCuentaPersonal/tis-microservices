@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{server/layouts/main-layout}">
+<head>
+    <title>Management Roles</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <h3 class="page-title">Management Roles</h3>
+
+    <!-- Formulario de roles -->
+    <div th:replace="~{server/fragments/forms/roles-form :: roles-form}"></div>
+
+    <!-- Tabla de roles -->
+    <div th:replace="~{server/fragments/tables/roles-table :: roles-table}"></div>
+</main>
+</body>
+</html>

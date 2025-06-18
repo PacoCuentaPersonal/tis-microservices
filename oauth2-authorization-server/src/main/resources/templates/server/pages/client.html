@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{server/layouts/main-layout}">
+<head>
+  <title>Client Configuration</title>
+</head>
+<body>
+<main layout:fragment="content">
+  <h2 class="page-title">Management Clients</h2>
+
+  <!-- Formulario de cliente -->
+  <div th:replace="~{server/fragments/forms/client-form :: client-form}"></div>
+
+  <!-- Tabla de clientes -->
+  <div th:replace="~{server/fragments/tables/client-table :: client-table}"></div>
+</main>
+</body>
+</html>

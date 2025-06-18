@@ -1,0 +1,36 @@
+server:
+  servlet:
+    context-path: /
+  max-http-request-header-size: 40KB
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  application:
+    name: user-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://escm.us.auth0.com/
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=300s
+
+auth0:
+  domain: escm.us.auth0.com
+  audience: https://escm.us.auth0.com/api/v2/
+  default-connection: Username-Password-Authentication
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true

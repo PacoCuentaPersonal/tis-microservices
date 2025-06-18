@@ -1,0 +1,9 @@
+server:
+  port: 31149
+
+spring:
+  application:
+    name: gateway
+
+message: "Gateway configuration loaded"
+environment: "base"

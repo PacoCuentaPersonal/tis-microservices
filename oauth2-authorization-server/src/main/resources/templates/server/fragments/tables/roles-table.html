@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="roles-table" class="table-container">
+  <table class="styled-table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="roleBinding : ${roles}">
+      <td th:text="${roleBinding.id}">1</td>
+      <td th:text="${roleBinding.name}">Custom Admin</td>
+      <td>
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary btn-sm update-button"
+                  th:attr="data-id=${roleBinding.id},data-name=${roleBinding.name}">
+            Update
+          </button>
+          <button type="button" class="btn btn-danger btn-sm delete-button"
+                  th:attr="data-id=${roleBinding.id}">
+            Delete
+          </button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
