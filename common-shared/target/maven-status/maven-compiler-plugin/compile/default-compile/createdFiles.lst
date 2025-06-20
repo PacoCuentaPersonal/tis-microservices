@@ -1,0 +1,10 @@
+com/jcs/validations/RequiredWhen$List.class
+com/jcs/response/EnvelopeResponse.class
+com/jcs/jpa/SortDirection.class
+com/jcs/response/EnvelopeResponse$EnvelopeResponseBuilder.class
+com/jcs/App.class
+com/jcs/pagination/PagedResponse.class
+com/jcs/validations/RequiredWhen.class
+com/jcs/response/ResponseStatus.class
+com/jcs/jpa/PaginationConstants.class
+com/jcs/validations/RequiredWhenValidator.class

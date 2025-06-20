@@ -1,0 +1,8 @@
+/home/user/tis-microservices/common-shared/src/main/java/com/jcs/validations/RequiredWhen.java
+/home/user/tis-microservices/common-shared/src/main/java/com/jcs/response/EnvelopeResponse.java
+/home/user/tis-microservices/common-shared/src/main/java/com/jcs/jpa/PaginationConstants.java
+/home/user/tis-microservices/common-shared/src/main/java/com/jcs/jpa/SortDirection.java
+/home/user/tis-microservices/common-shared/src/main/java/com/jcs/validations/RequiredWhenValidator.java
+/home/user/tis-microservices/common-shared/src/main/java/com/jcs/pagination/PagedResponse.java
+/home/user/tis-microservices/common-shared/src/main/java/com/jcs/response/ResponseStatus.java
+/home/user/tis-microservices/common-shared/src/main/java/com/jcs/App.java
