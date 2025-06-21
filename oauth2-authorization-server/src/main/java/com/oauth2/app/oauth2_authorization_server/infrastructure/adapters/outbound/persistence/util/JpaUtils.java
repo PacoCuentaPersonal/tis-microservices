@@ -1,6 +1,6 @@
 package com.oauth2.app.oauth2_authorization_server.infrastructure.adapters.outbound.persistence.util;
 
-import com.oauth2.app.oauth2_authorization_server.application.exception.throwers.SortFieldInvalidException; // Path corregido
+import com.oauth2.app.oauth2_authorization_server.application.exception.SortFieldInvalidException; // Path corregido
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

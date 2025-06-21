@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
-@Service
+@Slf4j()
+@Service()
 public class AccountDetailsService implements UserDetailsService {
 
     private final SpringDataJpaAccountRepository jpaAccountRepository;
@@ -39,17 +39,13 @@ public class AccountDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
         List<GrantedAuthority> authorities = new ArrayList<>();
-        // Assuming RolesEntity has a getName() method for the role name
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + account.getRole().getName())); 
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + account.getRole().getName()));
 
-        // Corrected method name to findByRole_IdAndActiveTrue
         List<RolesPermissionsEntity> rolePermissions = rolesPermissionsRepository
                 .findByRole_IdAndActiveTrue(account.getRole().getId()); 
 
         List<GrantedAuthority> permissionAuthorities = rolePermissions.stream()
-                // Assuming RolesPermissionsEntity has getPermission() which returns PermissionEntity,
-                // and PermissionEntity has getCode()
-                .map(rp -> new SimpleGrantedAuthority("PERMISSION_" + rp.getPermission().getCode())) 
+                .map(rp -> new SimpleGrantedAuthority("PERMISSION_" + rp.getPermission().getCode()))
                 .collect(Collectors.toList());
         authorities.addAll(permissionAuthorities);
 
@@ -59,9 +55,9 @@ public class AccountDetailsService implements UserDetailsService {
                 account.getEmail(),
                 account.getPassword(),
                 account.isActive(), 
-                true, // accountNonExpired - assuming always true or fetch from entity
-                true, // credentialsNonExpired - assuming always true or fetch from entity
-                true, // accountNonLocked - assuming always true or fetch from entity
+                true,
+                true,
+                true,
                 authorities
         );
     }

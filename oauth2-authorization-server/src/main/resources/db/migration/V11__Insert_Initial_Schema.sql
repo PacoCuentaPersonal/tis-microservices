@@ -1,5 +1,3 @@
-INSERT INTO oauth2.roles (name, description) VALUES ('ROOT', 'Perfil de administrador del sistema, con todos los permisos posibles');
-INSERT INTO oauth2.roles (name) VALUES ('ADMIN');
 
 -- Módulos básicos
 INSERT INTO oauth2.modules (code, name, active)
@@ -40,8 +38,12 @@ VALUES (5, 'PERMISSION_MANAGEMENT_PRODUCTS', 'Gestión de Productos', 1),
        (6, 'PERMISSION_MANAGEMENT_PRODUCTS_CATEGORY', 'Gestión de Categorías de Productos', 1),
        (7, 'PERMISSION_MANAGEMENT_WAREHOUSES', 'Gestión de Almacenes', 1);
 
+INSERT INTO oauth2.roles (name, description, active)
+VALUES ('ROOT','Usuario raiz del sistema', 1),
+       ('ADMIN','Usuario encargado de la gestión de cuentas', 1);
 
--- Asignación de TODOS los permisos al rol ADMIN (id = 1)
+
+-- Asignación de TODOS los permisos al rol ROOT (id = 1)
 INSERT INTO oauth2.roles_permissions (permission_id, role_id, active)
 VALUES (1, 1, 1),
        (2, 1, 1),

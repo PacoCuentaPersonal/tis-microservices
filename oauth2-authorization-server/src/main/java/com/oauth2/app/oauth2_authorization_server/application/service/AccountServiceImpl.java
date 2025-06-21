@@ -11,15 +11,14 @@ import com.oauth2.app.oauth2_authorization_server.domain.vo.PublicIdVO;
 // Corrected DTO imports
 import com.oauth2.app.oauth2_authorization_server.infrastructure.adapters.inbound.web.api.dto.request.account.AccountRequest;
 import com.oauth2.app.oauth2_authorization_server.infrastructure.adapters.inbound.web.api.dto.request.account.AccountUpdateRequest;
-import com.oauth2.app.oauth2_authorization_server.application.exception.throwers.AccountAlreadyExistsException; // Path corregido
-import com.oauth2.app.oauth2_authorization_server.application.exception.throwers.AccountNotFoundException; // Path corregido
+import com.oauth2.app.oauth2_authorization_server.application.exception.AccountAlreadyExistsException; // Path corregido
+import com.oauth2.app.oauth2_authorization_server.application.exception.AccountNotFoundException; // Path corregido
 import com.oauth2.app.oauth2_authorization_server.infrastructure.adapters.outbound.feign.fileservice.IFileServiceClient;
 import com.oauth2.app.oauth2_authorization_server.infrastructure.adapters.outbound.feign.fileservice.dto.ImageUploadRequest;
 import com.oauth2.app.oauth2_authorization_server.infrastructure.adapters.outbound.feign.fileservice.dto.ImageUploadResponse;
 import com.oauth2.app.oauth2_authorization_server.infrastructure.adapters.outbound.token.DataTokenService;
 import com.tis.account.NewAccountCreatedEvent;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

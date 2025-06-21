@@ -2,6 +2,12 @@
 /discovery-server/target
 /config-server/target
 /services-gateway/target
+/core-service/target
+/config-server/target
+/file-service/target
+/notification-service/target
+/common-events/target
+/common-shared/target
 
 /target/
 /.mvn/
