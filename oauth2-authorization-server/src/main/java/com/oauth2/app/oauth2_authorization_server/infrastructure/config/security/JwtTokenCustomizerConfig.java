@@ -12,16 +12,13 @@ import java.util.stream.Collectors;
 public class JwtTokenCustomizerConfig implements OAuth2TokenCustomizer<JwtEncodingContext> {
 
     public void customize(JwtEncodingContext context) {
-        // Solo personalizamos el token de acceso
         if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
             Authentication principal = context.getPrincipal();
 
-            // Extraemos todas las autoridades (roles y permisos)
             Set<String> authorities = principal.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toSet());
 
-            // Separamos roles de permisos (asumiendo la convención ROLE_ y PERMISSION_)
             Set<String> roles = authorities.stream()
                     .filter(authority -> authority.startsWith("ROLE_"))
                     .collect(Collectors.toSet());
@@ -30,13 +27,9 @@ public class JwtTokenCustomizerConfig implements OAuth2TokenCustomizer<JwtEncodi
                     .filter(authority -> authority.startsWith("PERMISSION_"))
                     .collect(Collectors.toSet());
 
-            // Agregamos claims al token JWT
             context.getClaims().claim("roles", roles);
             context.getClaims().claim("permissions", permissions);
 
-            // También puedes agregar información adicional del usuario si la necesitas
-            // Por ejemplo, si has extendido UserDetails para incluir el tenant_id:
-            // context.getClaims().claim("tenant_id", ((CustomUserDetails)principal).getTenantId());
         }
     }
 }

@@ -7,7 +7,7 @@ services:
     image: postgres:17-alpine
     restart: always
     ports:
-      - "5400:5432"
+      - "31150:5432"
     environment:
       POSTGRES_USER: dev
       POSTGRES_PASSWORD: dev2025@
@@ -20,8 +20,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - kafka-network
 
 networks:
   app-network:

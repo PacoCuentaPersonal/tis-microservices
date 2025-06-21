@@ -10,7 +10,7 @@ import com.oauth2.app.oauth2_authorization_server.infrastructure.adapters.inboun
 import com.oauth2.app.oauth2_authorization_server.infrastructure.adapters.inbound.web.api.dto.request.roles.RolesUpdateRequest;
 import com.oauth2.app.oauth2_authorization_server.infrastructure.adapters.inbound.web.api.dto.response.PermissionAssignmentResponse; // Path corregido
 import com.oauth2.app.oauth2_authorization_server.infrastructure.adapters.inbound.web.api.dto.response.RoleDetailsResponse; // Path corregido
-import com.oauth2.app.oauth2_authorization_server.application.exception.throwers.RoleNotFoundException; // Path corregido
+import com.oauth2.app.oauth2_authorization_server.application.exception.RoleNotFoundException; // Path corregido
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

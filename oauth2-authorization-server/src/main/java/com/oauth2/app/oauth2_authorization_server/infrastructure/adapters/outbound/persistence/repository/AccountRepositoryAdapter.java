@@ -48,10 +48,7 @@ public class AccountRepositoryAdapter implements AccountRepository {
     @Override
     public Account save(Account account) {
         AccountEntity accountEntity = mapDomainToEntity(account);
-        // Si es una nueva entidad y el publicId es generado por @UuidGenerator, se establecerá después del save.
-        // Si el ID (long) es generado, también se establecerá aquí.
         AccountEntity savedEntity = springDataJpaRepository.save(accountEntity);
-        // Asegurarse de que el publicId del savedEntity (si fue generado) se mapee de vuelta al dominio.
         return mapEntityToDomain(savedEntity);
     }
 
@@ -59,7 +56,7 @@ public class AccountRepositoryAdapter implements AccountRepository {
         if (entity == null) return null;
         return Account.builder()
                 .id(entity.getId())
-                .publicId(new PublicIdVO(entity.getPublicId())) // Asume que publicId nunca es null en la entidad después de ser persistida
+                .publicId(new PublicIdVO(entity.getPublicId()))
                 .email(entity.getEmail())
                 .username(entity.getUsername())
                 .password(entity.getPassword())

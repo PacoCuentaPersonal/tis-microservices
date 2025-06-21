@@ -1,11 +1,11 @@
 package com.oauth2.app.oauth2_authorization_server.infrastructure.config.security;
 
-// IMPORTS ORIGINALES
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -25,7 +25,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 
-// IMPORTS NUEVOS PARA JWT
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -39,8 +38,6 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 
-import com.oauth2.app.oauth2_authorization_server.infrastructure.config.security.JwtTokenCustomizerConfig;
-
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -51,7 +48,11 @@ import java.util.UUID;
 @Configuration
 public class AuthorizationServerConfig {
 
-    // BEANS ORIGINALES (NO CAMBIADOS)
+    private final DaoAuthenticationProvider authenticationProvider;
+
+    public AuthorizationServerConfig(DaoAuthenticationProvider authenticationProvider) {
+        this.authenticationProvider = authenticationProvider;
+    }
 
     @Bean
     public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
@@ -78,12 +79,7 @@ public class AuthorizationServerConfig {
         return new JwtTokenCustomizerConfig();
     }
 
-    // NUEVOS BEANS JWT AGREGADOS
-
-    /**
-     * Fuente de claves JWT para firmar y verificar tokens
-     * Genera un par de claves RSA único para esta instancia del servidor
-     */
+    // BEANS JWT
     @Bean
     public JWKSource<SecurityContext> jwkSource() throws NoSuchAlgorithmException {
         KeyPair keyPair = generateRSAKeyPair();
@@ -100,39 +96,24 @@ public class AuthorizationServerConfig {
         return new ImmutableJWKSet<>(jwkSet);
     }
 
-    /**
-     * Encoder JWT para crear y firmar tokens
-     * Usado por el Authorization Server Y por tu DataTokenService
-     */
     @Bean
     public JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwkSource) {
         return new NimbusJwtEncoder(jwkSource);
     }
 
-    /**
-     * Decoder JWT para validar y decodificar tokens
-     * Usado por el Resource Server Y por tu DataTokenService
-     */
     @Bean
     public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
-        // Crear el processor manualmente usando el constructor que SÍ existe
         DefaultJWTProcessor<SecurityContext> jwtProcessor = new DefaultJWTProcessor<>();
 
-        // Configurar el key selector para verificar firmas RSA
         JWSVerificationKeySelector<SecurityContext> keySelector =
                 new JWSVerificationKeySelector<>(JWSAlgorithm.RS256, jwkSource);
         jwtProcessor.setJWSKeySelector(keySelector);
 
-        // Spring Security maneja la validación de claims independientemente
         jwtProcessor.setJWTClaimsSetVerifier((claims, context) -> {});
 
         return new NimbusJwtDecoder(jwtProcessor);
     }
 
-    /**
-     * Genera un par de claves RSA de 2048 bits
-     * Método privado para uso interno
-     */
     private KeyPair generateRSAKeyPair() throws NoSuchAlgorithmException {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
         keyPairGenerator.initialize(2048);
@@ -173,12 +154,9 @@ public class AuthorizationServerConfig {
     @Order(2)
     public SecurityFilterChain resourceServerSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                // Agregar /api-docs/** al securityMatcher para que esta cadena procese esos endpoints
                 .securityMatcher("/api/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/api-docs/**")
                 .authorizeHttpRequests(authorize -> authorize
-                        // Permitir acceso sin autenticación a todos los endpoints de Swagger
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/api-docs/**").permitAll()
-                        // Requerir autenticación para los endpoints API reales
                         .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -195,14 +173,17 @@ public class AuthorizationServerConfig {
     @Order(3)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .authenticationProvider(authenticationProvider)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/error", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/error", "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
                         .requestMatchers("/.well-known/**").permitAll()
+                        .requestMatchers("/login").permitAll()
                         .requestMatchers("/client", "/account", "/roles", "/dashboard").authenticated()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/dashboard", false)
+                        .defaultSuccessUrl("/dashboard", true)
+                        .failureUrl("/login?error=true")
                         .permitAll())
                 .logout(logout -> logout
                         .logoutRequestMatcher(
@@ -216,7 +197,7 @@ public class AuthorizationServerConfig {
                             if (redirectUri != null && redirectUri.startsWith("http://localhost:4200")) {
                                 response.sendRedirect(redirectUri);
                             } else {
-                                response.sendRedirect("/login?logout");
+                                response.sendRedirect("/login?logout=true");
                             }
                         })
                         .invalidateHttpSession(true)
